@@ -8,7 +8,7 @@
   <title>桌面时钟</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body class="theme-dark">
+<body class="theme-light">
 
   <!-- ═══════════════════════════════════════════════════════════════
        Drag Region & Title Bar
@@ -74,6 +74,14 @@
         <div class="settings-options" id="setting-theme">
           <button class="settings-option active" data-theme="dark">深色</button>
           <button class="settings-option" data-theme="light">浅色</button>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <div class="settings-section-title">背景透明度</div>
+        <div class="settings-opacity-row">
+          <input type="range" id="bg-opacity-slider" class="opacity-slider" min="20" max="100" value="88" />
+          <span id="bg-opacity-value" class="opacity-value">88%</span>
         </div>
       </div>
 

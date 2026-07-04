@@ -22,7 +22,7 @@ function loadSettings() {
   } catch (err) {
     console.error('Failed to load settings:', err);
   }
-  return { theme: 'dark', alwaysOnTop: false };
+  return { theme: 'light', alwaysOnTop: false, bgOpacity: 0.88 };
 }
 
 function saveSettings(settings) {
@@ -184,6 +184,12 @@ ipcMain.on('window:maximize', () => {
     } else {
       mainWindow.maximize();
     }
+    // Force-sync state to renderer immediately after toggle
+    setTimeout(() => {
+      if (mainWindow) {
+        mainWindow.webContents.send('window:maximized', mainWindow.isMaximized());
+      }
+    }, 50);
   }
 });
 

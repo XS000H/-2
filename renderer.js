@@ -94,6 +94,7 @@ const SettingsManager = {
   _clockType: 'digital',
   _theme: 'dark',
   _alwaysOnTop: false,
+  _bgOpacity: 0.88,
 
   init() {
     // Load saved
@@ -103,6 +104,7 @@ const SettingsManager = {
           if (s.theme) this._theme = s.theme;
           if (s.clockType) this._clockType = s.clockType;
           if (s.alwaysOnTop !== undefined) this._alwaysOnTop = s.alwaysOnTop;
+          if (s.bgOpacity !== undefined) this._bgOpacity = s.bgOpacity;
         }
         this._applyAll();
       });
@@ -142,6 +144,19 @@ const SettingsManager = {
       if (api.toggleAlwaysOnTop) api.toggleAlwaysOnTop();
     });
 
+    // Background opacity slider
+    const opacitySlider = document.getElementById('bg-opacity-slider');
+    const opacityValue = document.getElementById('bg-opacity-value');
+    if (opacitySlider) {
+      opacitySlider.addEventListener('input', () => {
+        const val = parseInt(opacitySlider.value, 10) / 100;
+        this._bgOpacity = val;
+        this._applyBgOpacity();
+        opacityValue.textContent = opacitySlider.value + '%';
+        if (api.setSetting) api.setSetting('bgOpacity', val);
+      });
+    }
+
     // Esc to close
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && document.getElementById('settings-overlay').classList.contains('open')) {
@@ -167,11 +182,23 @@ const SettingsManager = {
     document.querySelectorAll('#setting-theme .settings-option').forEach(b => {
       b.classList.toggle('active', b.dataset.theme === this._theme);
     });
+    // Opacity slider
+    const opacitySlider = document.getElementById('bg-opacity-slider');
+    const opacityValue = document.getElementById('bg-opacity-value');
+    if (opacitySlider) {
+      opacitySlider.value = Math.round(this._bgOpacity * 100);
+      opacityValue.textContent = Math.round(this._bgOpacity * 100) + '%';
+    }
   },
 
   _applyAll() {
+    this._applyBgOpacity();
     this._applyTheme();
     this._applyClockType();
+  },
+
+  _applyBgOpacity() {
+    document.documentElement.style.setProperty('--bg-opacity', this._bgOpacity);
   },
 
   _applyTheme() {
@@ -684,9 +711,17 @@ const WindowControls = {
     document.getElementById('btn-minimize').addEventListener('click', () => { if (api.minimize) api.minimize(); });
     document.getElementById('btn-close').addEventListener('click', () => { if (api.close) api.close(); });
 
-    // Maximize (窗口化全屏)
-    document.getElementById('btn-maximize').addEventListener('click', () => {
+    // Maximize (窗口化全屏) — toggle maximize/unmaximize + force re-check
+    document.getElementById('btn-maximize').addEventListener('click', async () => {
       if (api.maximize) api.maximize();
+      // Re-check state from main process after a short delay
+      setTimeout(async () => {
+        if (api.isMaximized) {
+          const state = await api.isMaximized();
+          this._isMaximized = state;
+          this._updateMaxBtnIcon();
+        }
+      }, 100);
     });
 
     // Always on top
@@ -699,6 +734,14 @@ const WindowControls = {
     if (api.onMaximizeChange) {
       api.onMaximizeChange((isMaximized) => {
         this._isMaximized = isMaximized;
+        this._updateMaxBtnIcon();
+      });
+    }
+
+    // Sync initial maximize state from main process
+    if (api.isMaximized) {
+      api.isMaximized().then((state) => {
+        this._isMaximized = state;
         this._updateMaxBtnIcon();
       });
     }
