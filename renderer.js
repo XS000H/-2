@@ -376,10 +376,10 @@ const FlipClock = {
     const digit = document.querySelector(`.flip-digit[data-digit="${which}"]`);
     if (!digit) return;
 
-    const top = digit.querySelector('.flip-top');
-    const bottom = digit.querySelector('.flip-bottom');
+    const top = digit.querySelector('.flip-top span');
+    const bottom = digit.querySelector('.flip-bottom span');
 
-    if (oldVal !== undefined && newVal !== oldVal) {
+    if (oldVal !== undefined && oldVal !== '' && newVal !== oldVal) {
       // Start flip animation with old value on top, new on bottom
       top.textContent = oldVal;
       bottom.textContent = newVal;
@@ -396,7 +396,7 @@ const FlipClock = {
       setTimeout(() => {
         digit.classList.remove('flipping');
       }, 500);
-    } else if (oldVal === undefined) {
+    } else if (oldVal === undefined || oldVal === '') {
       top.textContent = newVal;
       bottom.textContent = newVal;
     }
@@ -1044,6 +1044,7 @@ const ThemeManager = {
 
 const WindowControls = {
   _isFullscreen: false,
+  _isMaximized: false,
 
   init() {
     document.getElementById('btn-minimize').addEventListener('click', () => {
@@ -1054,8 +1055,9 @@ const WindowControls = {
       if (api.close) api.close();
     });
 
-    document.getElementById('btn-fullscreen').addEventListener('click', () => {
-      this.toggleFullscreen();
+    // Maximize (窗口化全屏) — fills screen, keeps titlebar + nav
+    document.getElementById('btn-maximize').addEventListener('click', () => {
+      this.toggleMaximize();
     });
 
     document.getElementById('btn-alwaysontop').addEventListener('click', () => {
@@ -1063,15 +1065,26 @@ const WindowControls = {
       this._updateAlwaysOnTopBtn();
     });
 
-    // Double-click on titlebar to toggle fullscreen
+    // Double-click on titlebar → immersive fullscreen
     document.querySelector('.titlebar-drag').addEventListener('dblclick', () => {
-      this.toggleFullscreen();
+      this.toggleImmersiveFullscreen();
     });
 
-    // Escape to exit fullscreen
+    // Double-click on clock area → immersive fullscreen
+    document.getElementById('module-clock').addEventListener('dblclick', (e) => {
+      // Don't trigger on interactive elements
+      if (e.target.closest('button') || e.target.closest('input')) return;
+      this.toggleImmersiveFullscreen();
+    });
+
+    // F11 → immersive fullscreen
     document.addEventListener('keydown', (e) => {
+      if (e.key === 'F11') {
+        e.preventDefault();
+        this.toggleImmersiveFullscreen();
+      }
       if (e.key === 'Escape' && this._isFullscreen) {
-        this.toggleFullscreen();
+        this.toggleImmersiveFullscreen();
       }
     });
 
@@ -1079,12 +1092,37 @@ const WindowControls = {
     this._updateAlwaysOnTopBtn();
   },
 
-  toggleFullscreen() {
+  toggleMaximize() {
+    if (api.maximize) {
+      api.maximize();
+    }
+    this._isMaximized = !this._isMaximized;
+    this._updateMaxBtnIcon();
+  },
+
+  toggleImmersiveFullscreen() {
     if (api.toggleFullscreen) {
       api.toggleFullscreen();
     }
     this._isFullscreen = !this._isFullscreen;
     document.body.classList.toggle('fullscreen-mode', this._isFullscreen);
+  },
+
+  _updateMaxBtnIcon() {
+    const btn = document.getElementById('btn-maximize');
+    if (!btn) return;
+    if (this._isMaximized) {
+      btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="7" y="7" width="10" height="10" rx="1"></rect>
+        <rect x="4" y="4" width="12" height="12" rx="2"></rect>
+      </svg>`;
+      btn.title = '还原';
+    } else {
+      btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+      </svg>`;
+      btn.title = '窗口化全屏';
+    }
   },
 
   _updateAlwaysOnTopBtn() {

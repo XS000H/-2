@@ -106,6 +106,14 @@ function createWindow() {
     saveSettings(currentSettings);
   });
 
+  // Sync maximize state to renderer
+  mainWindow.on('maximize', () => {
+    mainWindow.webContents.send('window:maximized', true);
+  });
+  mainWindow.on('unmaximize', () => {
+    mainWindow.webContents.send('window:maximized', false);
+  });
+
   // Prevent closing to tray unless explicitly quitting
   mainWindow.on('close', (event) => {
     if (!isQuitting) {

@@ -14,9 +14,7 @@
        Drag Region & Title Bar
        ═══════════════════════════════════════════════════════════════ -->
   <header id="titlebar" class="titlebar">
-    <div class="titlebar-drag">
-      <span class="titlebar-label">⏰ 桌面时钟</span>
-    </div>
+    <div class="titlebar-drag"></div>
     <div class="titlebar-controls">
       <button id="btn-alwaysontop" class="titlebar-btn" title="窗口置顶" aria-label="窗口置顶">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -24,11 +22,9 @@
           <line x1="15" y1="4" x2="20" y2="9"></line><line x1="14" y1="14" x2="20" y2="20"></line>
         </svg>
       </button>
-      <button id="btn-fullscreen" class="titlebar-btn" title="全屏" aria-label="全屏">
+      <button id="btn-maximize" class="titlebar-btn" title="窗口化全屏" aria-label="窗口化全屏">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <polyline points="15 3 21 3 21 9"></polyline>
-          <polyline points="9 21 3 21 3 15"></polyline>
-          <line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line>
+          <rect x="4" y="4" width="16" height="16" rx="2"></rect>
         </svg>
       </button>
       <button id="btn-minimize" class="titlebar-btn" title="最小化" aria-label="最小化">
@@ -92,28 +88,28 @@
         <div class="flip-container" id="flip-container">
           <div class="flip-group">
             <div class="flip-digit" data-digit="hours-tens">
-              <div class="flip-card"><div class="flip-top">0</div><div class="flip-bottom">0</div></div>
+              <div class="flip-card"><div class="flip-top"><span>0</span></div><div class="flip-bottom"><span>0</span></div></div>
             </div>
             <div class="flip-digit" data-digit="hours-ones">
-              <div class="flip-card"><div class="flip-top">0</div><div class="flip-bottom">0</div></div>
+              <div class="flip-card"><div class="flip-top"><span>0</span></div><div class="flip-bottom"><span>0</span></div></div>
             </div>
           </div>
           <span class="flip-separator">:</span>
           <div class="flip-group">
             <div class="flip-digit" data-digit="mins-tens">
-              <div class="flip-card"><div class="flip-top">0</div><div class="flip-bottom">0</div></div>
+              <div class="flip-card"><div class="flip-top"><span>0</span></div><div class="flip-bottom"><span>0</span></div></div>
             </div>
             <div class="flip-digit" data-digit="mins-ones">
-              <div class="flip-card"><div class="flip-top">0</div><div class="flip-bottom">0</div></div>
+              <div class="flip-card"><div class="flip-top"><span>0</span></div><div class="flip-bottom"><span>0</span></div></div>
             </div>
           </div>
           <span class="flip-separator">:</span>
           <div class="flip-group">
             <div class="flip-digit" data-digit="secs-tens">
-              <div class="flip-card"><div class="flip-top">0</div><div class="flip-bottom">0</div></div>
+              <div class="flip-card"><div class="flip-top"><span>0</span></div><div class="flip-bottom"><span>0</span></div></div>
             </div>
             <div class="flip-digit" data-digit="secs-ones">
-              <div class="flip-card"><div class="flip-top">0</div><div class="flip-bottom">0</div></div>
+              <div class="flip-card"><div class="flip-top"><span>0</span></div><div class="flip-bottom"><span>0</span></div></div>
             </div>
           </div>
         </div>

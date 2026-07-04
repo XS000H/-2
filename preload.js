@@ -27,7 +27,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   },
 
   // ── Listeners ──────────────────────────────────────────────────
-  onFullscreenChange: (callback) => {
-    ipcRenderer.on('fullscreen:changed', (event, isFullscreen) => callback(isFullscreen));
+  onMaximizeChange: (callback) => {
+    ipcRenderer.on('window:maximized', (event, isMaximized) => callback(isMaximized));
   },
 });

@@ -411,7 +411,7 @@ body {
   position: relative;
   width: 56px;
   height: 80px;
-  perspective: 400px;
+  perspective: 600px;
 }
 
 .flip-card {
@@ -426,33 +426,44 @@ body {
   left: 0;
   width: 100%;
   height: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: "Cascadia Code", "Fira Code", "JetBrains Mono", "Roboto Mono", monospace;
-  font-size: 52px;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
   overflow: hidden;
+  background: var(--flip-bg);
   backface-visibility: hidden;
 }
 
 .flip-top {
   top: 0;
-  background: var(--flip-bg);
-  color: var(--flip-text);
   border-radius: 8px 8px 0 0;
-  align-items: flex-end;
   border-bottom: 1px solid var(--flip-divider);
 }
 
 .flip-bottom {
   bottom: 0;
-  background: var(--flip-bg);
-  color: var(--flip-text);
   border-radius: 0 0 8px 8px;
-  align-items: flex-start;
   border-top: 1px solid var(--flip-divider);
+}
+
+.flip-top span,
+.flip-bottom span {
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-family: "Cascadia Code", "Fira Code", "JetBrains Mono", "Roboto Mono", monospace;
+  font-size: 52px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 80px;
+  color: var(--flip-text);
+}
+
+/* Top half: text positioned at the top, overflow clips the bottom */
+.flip-top span {
+  /* natural position — shows upper half */
+}
+
+/* Bottom half: shift text up so the lower half of the digit shows */
+.flip-bottom span {
+  margin-top: -40px; /* shift up by half-height to reveal bottom of digit */
 }
 
 .flip-digit.flipping .flip-top {
@@ -1023,9 +1034,13 @@ body.fullscreen-mode .flip-digit {
   height: 110px;
 }
 
-body.fullscreen-mode .flip-top,
-body.fullscreen-mode .flip-bottom {
+body.fullscreen-mode .flip-top span,
+body.fullscreen-mode .flip-bottom span {
   font-size: 76px;
+  line-height: 110px;
+}
+body.fullscreen-mode .flip-bottom span {
+  margin-top: -55px;
 }
 
 /* ═══════════════════════════════════════════════════════════════════
