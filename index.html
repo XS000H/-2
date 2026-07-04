@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; media-src 'self' data:;" />
+  <title>桌面时钟</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="theme-dark">
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       Drag Region & Title Bar
+       ═══════════════════════════════════════════════════════════════ -->
+  <header id="titlebar" class="titlebar">
+    <div class="titlebar-drag">
+      <span class="titlebar-label">⏰ 桌面时钟</span>
+    </div>
+    <div class="titlebar-controls">
+      <button id="btn-alwaysontop" class="titlebar-btn" title="窗口置顶" aria-label="窗口置顶">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="9 14 4 9 9 4"></polyline><line x1="20" y1="20" x2="9" y2="9"></line>
+          <line x1="15" y1="4" x2="20" y2="9"></line><line x1="14" y1="14" x2="20" y2="20"></line>
+        </svg>
+      </button>
+      <button id="btn-fullscreen" class="titlebar-btn" title="全屏" aria-label="全屏">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="15 3 21 3 21 9"></polyline>
+          <polyline points="9 21 3 21 3 15"></polyline>
+          <line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line>
+        </svg>
+      </button>
+      <button id="btn-minimize" class="titlebar-btn" title="最小化" aria-label="最小化">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+      </button>
+      <button id="btn-close" class="titlebar-btn titlebar-btn-close" title="关闭到托盘" aria-label="关闭">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       Main Container
+       ═══════════════════════════════════════════════════════════════ -->
+  <main id="app" class="app-container">
+
+    <!-- ════════════════════════════════════════════════════════════
+         Module A: Multi-clock (Digital / Analog / Flip)
+         ════════════════════════════════════════════════════════════ -->
+    <section id="module-clock" class="module active">
+      <!-- Clock type tabs -->
+      <div class="clock-type-tabs">
+        <button class="clock-type-btn active" data-type="digital">数字</button>
+        <button class="clock-type-btn" data-type="analog">指针</button>
+        <button class="clock-type-btn" data-type="flip">翻页</button>
+      </div>
+
+      <!-- Digital Clock -->
+      <div id="clock-digital" class="clock-panel active">
+        <div class="digital-time" id="digital-time">00:00:00</div>
+        <div class="digital-date" id="digital-date">2026年1月1日</div>
+        <div class="digital-weekday" id="digital-weekday">星期四</div>
+      </div>
+
+      <!-- Analog Clock -->
+      <div id="clock-analog" class="clock-panel">
+        <svg class="analog-svg" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+          <!-- Outer ring -->
+          <circle cx="150" cy="150" r="140" fill="none" stroke="var(--clock-ring)" stroke-width="2" />
+          <!-- Hour markers -->
+          <g id="hour-markers"></g>
+          <!-- Minute markers -->
+          <g id="minute-markers"></g>
+          <!-- Hour hand -->
+          <line id="hand-hour" x1="150" y1="150" x2="150" y2="70" stroke="var(--clock-hour)" stroke-width="5" stroke-linecap="round" />
+          <!-- Minute hand -->
+          <line id="hand-minute" x1="150" y1="150" x2="150" y2="40" stroke="var(--clock-minute)" stroke-width="3" stroke-linecap="round" />
+          <!-- Second hand -->
+          <line id="hand-second" x1="150" y1="170" x2="150" y2="30" stroke="var(--clock-second)" stroke-width="1.5" stroke-linecap="round" />
+          <!-- Center dot -->
+          <circle cx="150" cy="150" r="5" fill="var(--clock-second)" />
+        </svg>
+      </div>
+
+      <!-- Flip Clock -->
+      <div id="clock-flip" class="clock-panel">
+        <div class="flip-container" id="flip-container">
+          <div class="flip-group">
+            <div class="flip-digit" data-digit="hours-tens">
+              <div class="flip-card"><div class="flip-top">0</div><div class="flip-bottom">0</div></div>
+            </div>
+            <div class="flip-digit" data-digit="hours-ones">
+              <div class="flip-card"><div class="flip-top">0</div><div class="flip-bottom">0</div></div>
+            </div>
+          </div>
+          <span class="flip-separator">:</span>
+          <div class="flip-group">
+            <div class="flip-digit" data-digit="mins-tens">
+              <div class="flip-card"><div class="flip-top">0</div><div class="flip-bottom">0</div></div>
+            </div>
+            <div class="flip-digit" data-digit="mins-ones">
+              <div class="flip-card"><div class="flip-top">0</div><div class="flip-bottom">0</div></div>
+            </div>
+          </div>
+          <span class="flip-separator">:</span>
+          <div class="flip-group">
+            <div class="flip-digit" data-digit="secs-tens">
+              <div class="flip-card"><div class="flip-top">0</div><div class="flip-bottom">0</div></div>
+            </div>
+            <div class="flip-digit" data-digit="secs-ones">
+              <div class="flip-card"><div class="flip-top">0</div><div class="flip-bottom">0</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="flip-date" id="flip-date">2026年1月1日 星期四</div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════════════════
+         Module B: World Clock
+         ════════════════════════════════════════════════════════════ -->
+    <section id="module-world" class="module">
+      <h2 class="module-title">🌍 世界时钟</h2>
+      <div class="world-clock-grid" id="world-clock-grid">
+        <div class="world-card" data-city="北京" data-tz="Asia/Shanghai" data-utc="+8">
+          <div class="world-card-header">
+            <span class="world-city">🇨🇳 北京</span>
+            <span class="world-offset">UTC+8</span>
+          </div>
+          <div class="world-time">00:00:00</div>
+          <div class="world-meta">
+            <span class="world-date">2026/1/1</span>
+            <span class="world-diff">本地时间</span>
+          </div>
+        </div>
+        <div class="world-card" data-city="纽约" data-tz="America/New_York" data-utc="-5">
+          <div class="world-card-header">
+            <span class="world-city">🇺🇸 纽约</span>
+            <span class="world-offset">UTC-5</span>
+          </div>
+          <div class="world-time">00:00:00</div>
+          <div class="world-meta">
+            <span class="world-date">2026/1/1</span>
+            <span class="world-diff"></span>
+          </div>
+        </div>
+        <div class="world-card" data-city="伦敦" data-tz="Europe/London" data-utc="+0">
+          <div class="world-card-header">
+            <span class="world-city">🇬🇧 伦敦</span>
+            <span class="world-offset">UTC+0</span>
+          </div>
+          <div class="world-time">00:00:00</div>
+          <div class="world-meta">
+            <span class="world-date">2026/1/1</span>
+            <span class="world-diff"></span>
+          </div>
+        </div>
+        <div class="world-card" data-city="东京" data-tz="Asia/Tokyo" data-utc="+9">
+          <div class="world-card-header">
+            <span class="world-city">🇯🇵 东京</span>
+            <span class="world-offset">UTC+9</span>
+          </div>
+          <div class="world-time">00:00:00</div>
+          <div class="world-meta">
+            <span class="world-date">2026/1/1</span>
+            <span class="world-diff"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════════════════
+         Module C: Alarms
+         ════════════════════════════════════════════════════════════ -->
+    <section id="module-alarms" class="module">
+      <h2 class="module-title">⏰ 智能闹钟</h2>
+
+      <!-- Add alarm form -->
+      <div class="alarm-form">
+        <input type="time" id="alarm-time-input" class="alarm-time-input" required />
+        <input type="text" id="alarm-label-input" class="alarm-label-input" placeholder="备注标签…" maxlength="20" />
+        <button id="alarm-add-btn" class="alarm-add-btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Alarm list -->
+      <ul id="alarm-list" class="alarm-list">
+        <li class="alarm-empty">暂无闹钟，点击 + 添加</li>
+      </ul>
+    </section>
+
+    <!-- ════════════════════════════════════════════════════════════
+         Module D: Timer & Stopwatch
+         ════════════════════════════════════════════════════════════ -->
+    <section id="module-timer" class="module">
+      <!-- Tab switcher -->
+      <div class="timer-type-tabs">
+        <button class="timer-type-btn active" data-timer="timer">倒计时</button>
+        <button class="timer-type-btn" data-timer="stopwatch">秒表</button>
+      </div>
+
+      <!-- ── Timer ── -->
+      <div id="timer-panel" class="timer-panel active">
+        <div class="timer-ring-container">
+          <svg class="timer-ring-svg" viewBox="0 0 200 200">
+            <circle class="timer-ring-bg" cx="100" cy="100" r="90"
+                    fill="none" stroke="var(--ring-bg)" stroke-width="6" />
+            <circle id="timer-ring-progress" class="timer-ring-progress" cx="100" cy="100" r="90"
+                    fill="none" stroke="var(--ring-progress)" stroke-width="6" stroke-linecap="round"
+                    stroke-dasharray="565.487" stroke-dashoffset="0" />
+          </svg>
+          <div class="timer-display" id="timer-display">00:00:00</div>
+        </div>
+
+        <div class="timer-inputs" id="timer-inputs">
+          <div class="timer-input-group">
+            <input type="number" id="timer-hours" min="0" max="99" value="0" placeholder="时" />
+            <label>时</label>
+          </div>
+          <div class="timer-input-group">
+            <input type="number" id="timer-minutes" min="0" max="59" value="5" placeholder="分" />
+            <label>分</label>
+          </div>
+          <div class="timer-input-group">
+            <input type="number" id="timer-seconds" min="0" max="59" value="0" placeholder="秒" />
+            <label>秒</label>
+          </div>
+        </div>
+
+        <div class="timer-actions">
+          <button id="timer-start-btn" class="timer-action-btn primary">开始</button>
+          <button id="timer-pause-btn" class="timer-action-btn" style="display:none;">暂停</button>
+          <button id="timer-reset-btn" class="timer-action-btn">重置</button>
+        </div>
+      </div>
+
+      <!-- ── Stopwatch ── -->
+      <div id="stopwatch-panel" class="timer-panel">
+        <div class="stopwatch-display" id="stopwatch-display">00:00:00.00</div>
+        <div class="stopwatch-actions">
+          <button id="sw-start-btn" class="timer-action-btn primary">开始</button>
+          <button id="sw-pause-btn" class="timer-action-btn" style="display:none;">暂停</button>
+          <button id="sw-lap-btn" class="timer-action-btn" style="display:none;">计次</button>
+          <button id="sw-reset-btn" class="timer-action-btn">重置</button>
+        </div>
+        <ul id="lap-list" class="lap-list"></ul>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       Bottom Navigation
+       ═══════════════════════════════════════════════════════════════ -->
+  <nav id="navbar" class="navbar">
+    <button class="nav-btn active" data-module="clock">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+      </svg>
+      <span>时钟</span>
+    </button>
+    <button class="nav-btn" data-module="world">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line>
+        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+      </svg>
+      <span>世界</span>
+    </button>
+    <button class="nav-btn" data-module="alarms">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <circle cx="12" cy="13" r="8"></circle><line x1="12" y1="1" x2="12" y2="4"></line>
+        <line x1="20" y1="2" x2="20" y2="4"></line><line x1="4" y1="2" x2="4" y2="4"></line>
+        <line x1="9" y1="13" x2="15" y2="13"></line>
+      </svg>
+      <span>闹钟</span>
+    </button>
+    <button class="nav-btn" data-module="timer">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 9 9"></polyline>
+        <polyline points="6 6 6 18 18 18 18 6"></polyline>
+      </svg>
+      <span>计时</span>
+    </button>
+
+    <!-- Theme toggle -->
+    <button id="btn-theme" class="nav-btn nav-btn-theme" title="切换主题">
+      <svg id="theme-icon-light" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line>
+        <line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line>
+        <line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+      </svg>
+      <svg id="theme-icon-dark" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+      </svg>
+    </button>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       Alarm sound element (hidden)
+       ═══════════════════════════════════════════════════════════════ -->
+  <audio id="alarm-audio" preload="auto" loop>
+    <!-- Silent fallback: a short beep generated as base64 WAV -->
+    <source src="" type="audio/wav" />
+  </audio>
+
+  <script src="renderer.js"></script>
+</body>
+</html>

@@ -1,0 +1,1059 @@
+/* ═══════════════════════════════════════════════════════════════════
+   CSS Custom Properties — Theme Definitions
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* Light Theme: Cream (浅色高级灰) */
+.theme-light,
+body.theme-light {
+  --bg-primary: #f5f0e8;
+  --bg-secondary: #ede6da;
+  --bg-glass: rgba(245, 240, 232, 0.72);
+  --bg-glass-hover: rgba(235, 228, 215, 0.85);
+  --bg-card: rgba(255, 252, 247, 0.65);
+  --bg-card-hover: rgba(255, 252, 247, 0.88);
+  --bg-nav: rgba(235, 228, 215, 0.78);
+  --bg-input: rgba(255, 252, 247, 0.70);
+  --text-primary: #2c2416;
+  --text-secondary: #6b5e4a;
+  --text-muted: #9e9078;
+  --accent: #b8860b;
+  --accent-glow: rgba(184, 134, 11, 0.22);
+  --border: rgba(140, 120, 80, 0.15);
+  --border-focus: rgba(184, 134, 11, 0.45);
+  --shadow-sm: 0 1px 3px rgba(60, 40, 10, 0.06);
+  --shadow-md: 0 4px 16px rgba(60, 40, 10, 0.10);
+  --shadow-lg: 0 12px 40px rgba(60, 40, 10, 0.14);
+  --clock-ring: #c4b99a;
+  --clock-hour: #2c2416;
+  --clock-minute: #5c4e36;
+  --clock-second: #c0392b;
+  --ring-bg: rgba(180, 160, 130, 0.18);
+  --ring-progress: #b8860b;
+  --flip-bg: #2c2416;
+  --flip-text: #f5f0e8;
+  --flip-divider: #1a1610;
+  --nav-active: #b8860b;
+  --danger: #c0392b;
+  --success: #27ae60;
+  --scrollbar-thumb: rgba(140, 120, 80, 0.25);
+  --scrollbar-track: transparent;
+}
+
+/* Dark Theme: Obsidian (深邃暗黑) */
+.theme-dark,
+body.theme-dark {
+  --bg-primary: #0f0f10;
+  --bg-secondary: #1a1a1d;
+  --bg-glass: rgba(18, 18, 22, 0.72);
+  --bg-glass-hover: rgba(28, 28, 34, 0.85);
+  --bg-card: rgba(22, 22, 28, 0.65);
+  --bg-card-hover: rgba(30, 30, 38, 0.88);
+  --bg-nav: rgba(15, 15, 18, 0.78);
+  --bg-input: rgba(28, 28, 34, 0.70);
+  --text-primary: #e8e4dc;
+  --text-secondary: #a09888;
+  --text-muted: #605850;
+  --accent: #d4a843;
+  --accent-glow: rgba(212, 168, 67, 0.22);
+  --border: rgba(255, 255, 255, 0.08);
+  --border-focus: rgba(212, 168, 67, 0.40);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.18);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.28);
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.40);
+  --clock-ring: #3a3530;
+  --clock-hour: #e8e4dc;
+  --clock-minute: #a09888;
+  --clock-second: #e74c3c;
+  --ring-bg: rgba(255, 255, 255, 0.06);
+  --ring-progress: #d4a843;
+  --flip-bg: #1a1a1d;
+  --flip-text: #e8e4dc;
+  --flip-divider: #0a0a0c;
+  --nav-active: #d4a843;
+  --danger: #e74c3c;
+  --success: #2ecc71;
+  --scrollbar-thumb: rgba(255, 255, 255, 0.12);
+  --scrollbar-track: transparent;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Global Reset & Base
+   ═══════════════════════════════════════════════════════════════════ */
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", "Inter", system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+  color: var(--text-primary);
+  background: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  border-radius: 16px;
+  background: var(--bg-glass);
+  backdrop-filter: blur(28px) saturate(140%);
+  -webkit-backdrop-filter: blur(28px) saturate(140%);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-lg);
+  transition: background 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Scrollbar
+   ═══════════════════════════════════════════════════════════════════ */
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Titlebar (Drag Region)
+   ═══════════════════════════════════════════════════════════════════ */
+
+.titlebar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 38px;
+  padding: 0 8px 0 16px;
+  flex-shrink: 0;
+  -webkit-app-region: drag;
+}
+
+.titlebar-drag {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.titlebar-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  letter-spacing: 0.5px;
+}
+
+.titlebar-controls {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  -webkit-app-region: no-drag;
+}
+
+.titlebar-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 28px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.titlebar-btn:hover {
+  background: var(--bg-glass-hover);
+  color: var(--text-primary);
+}
+
+.titlebar-btn-close:hover {
+  background: var(--danger);
+  color: #fff;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   App Container
+   ═══════════════════════════════════════════════════════════════════ */
+
+.app-container {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 8px 20px 20px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Module Visibility
+   ═══════════════════════════════════════════════════════════════════ */
+
+.module {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  animation: moduleFadeIn 0.35s ease;
+}
+
+.module.active {
+  display: flex;
+}
+
+.module-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 0.5px;
+  text-align: center;
+  margin-bottom: 4px;
+}
+
+@keyframes moduleFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Bottom Navigation
+   ═══════════════════════════════════════════════════════════════════ */
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: 60px;
+  padding: 0 12px;
+  flex-shrink: 0;
+  background: var(--bg-nav);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  border-top: 1px solid var(--border);
+  border-radius: 0 0 16px 16px;
+  transition: background 0.5s ease, border-color 0.5s ease;
+}
+
+.nav-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-width: 56px;
+  padding: 6px 8px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 10px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  -webkit-app-region: no-drag;
+}
+
+.nav-btn:hover {
+  color: var(--text-secondary);
+  background: var(--bg-glass-hover);
+}
+
+.nav-btn.active {
+  color: var(--nav-active);
+  background: var(--accent-glow);
+}
+
+.nav-btn svg {
+  transition: stroke 0.25s ease;
+}
+
+.nav-btn-theme {
+  min-width: 40px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Module A — Clock Type Tabs
+   ═══════════════════════════════════════════════════════════════════ */
+
+.clock-type-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  background: var(--bg-glass);
+  border-radius: 10px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+}
+
+.clock-type-btn {
+  padding: 6px 18px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  -webkit-app-region: no-drag;
+}
+
+.clock-type-btn:hover {
+  color: var(--text-primary);
+}
+
+.clock-type-btn.active {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 2px 8px var(--accent-glow);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Clock Panel Container
+   ═══════════════════════════════════════════════════════════════════ */
+
+.clock-panel {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  animation: panelSwitch 0.4s ease;
+}
+
+.clock-panel.active {
+  display: flex;
+}
+
+@keyframes panelSwitch {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* ── Digital Clock ─────────────────────────────────────────────── */
+
+.digital-time {
+  font-family: "Cascadia Code", "Fira Code", "JetBrains Mono", "Roboto Mono", "Consolas", monospace;
+  font-size: 72px;
+  font-weight: 300;
+  letter-spacing: 2px;
+  color: var(--text-primary);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  transition: color 0.5s ease;
+}
+
+.digital-date {
+  font-size: 16px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.digital-weekday {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 400;
+  letter-spacing: 1px;
+}
+
+/* ── Analog Clock ──────────────────────────────────────────────── */
+
+#clock-analog {
+  padding: 10px 0;
+}
+
+.analog-svg {
+  width: 240px;
+  height: 240px;
+  filter: drop-shadow(0 4px 12px var(--shadow-md));
+}
+
+#hand-second {
+  transition: transform 0.05s linear;
+}
+
+/* ── Flip Clock ────────────────────────────────────────────────── */
+
+.flip-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 0;
+}
+
+.flip-group {
+  display: flex;
+  gap: 4px;
+}
+
+.flip-digit {
+  position: relative;
+  width: 56px;
+  height: 80px;
+  perspective: 400px;
+}
+
+.flip-card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.flip-top,
+.flip-bottom {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Cascadia Code", "Fira Code", "JetBrains Mono", "Roboto Mono", monospace;
+  font-size: 52px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  overflow: hidden;
+  backface-visibility: hidden;
+}
+
+.flip-top {
+  top: 0;
+  background: var(--flip-bg);
+  color: var(--flip-text);
+  border-radius: 8px 8px 0 0;
+  align-items: flex-end;
+  border-bottom: 1px solid var(--flip-divider);
+}
+
+.flip-bottom {
+  bottom: 0;
+  background: var(--flip-bg);
+  color: var(--flip-text);
+  border-radius: 0 0 8px 8px;
+  align-items: flex-start;
+  border-top: 1px solid var(--flip-divider);
+}
+
+.flip-digit.flipping .flip-top {
+  animation: flipTop 0.5s ease-in forwards;
+}
+
+.flip-digit.flipping .flip-bottom {
+  animation: flipBottom 0.5s ease-out forwards;
+}
+
+@keyframes flipTop {
+  0%   { transform: rotateX(0deg); }
+  100% { transform: rotateX(-180deg); }
+}
+
+@keyframes flipBottom {
+  0%   { transform: rotateX(90deg); }
+  100% { transform: rotateX(0deg); }
+}
+
+.flip-separator {
+  font-family: "Cascadia Code", "Fira Code", "JetBrains Mono", monospace;
+  font-size: 48px;
+  font-weight: 300;
+  color: var(--accent);
+  padding-bottom: 6px;
+  animation: separatorPulse 1s ease-in-out infinite;
+}
+
+@keyframes separatorPulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.35; }
+}
+
+.flip-date {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Module B — World Clock
+   ═══════════════════════════════════════════════════════════════════ */
+
+.world-clock-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  width: 100%;
+}
+
+.world-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px;
+  background: var(--bg-card);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  -webkit-app-region: no-drag;
+}
+
+.world-card:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-focus);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.world-card.switching {
+  animation: cardSwitch 0.5s ease;
+}
+
+@keyframes cardSwitch {
+  0%   { transform: scale(1); box-shadow: none; }
+  30%  { transform: scale(1.06); box-shadow: 0 0 30px var(--accent-glow); }
+  100% { transform: scale(1); box-shadow: none; }
+}
+
+.world-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.world-city {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.world-offset {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--accent);
+  background: var(--accent-glow);
+  padding: 2px 8px;
+  border-radius: 99px;
+}
+
+.world-time {
+  font-family: "Cascadia Code", "Fira Code", "JetBrains Mono", "Roboto Mono", monospace;
+  font-size: 28px;
+  font-weight: 400;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.world-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.world-diff {
+  font-weight: 600;
+  color: var(--accent);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Module C — Alarms
+   ═══════════════════════════════════════════════════════════════════ */
+
+.alarm-form {
+  display: flex;
+  gap: 6px;
+  width: 100%;
+  align-items: center;
+}
+
+.alarm-time-input {
+  width: 110px;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg-input);
+  color: var(--text-primary);
+  font-size: 14px;
+  font-family: "Cascadia Code", "Fira Code", "JetBrains Mono", monospace;
+  outline: none;
+  transition: border-color 0.2s ease;
+  -webkit-app-region: no-drag;
+}
+
+.alarm-time-input:focus {
+  border-color: var(--border-focus);
+}
+
+.alarm-label-input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg-input);
+  color: var(--text-primary);
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.2s ease;
+  -webkit-app-region: no-drag;
+}
+
+.alarm-label-input:focus {
+  border-color: var(--border-focus);
+}
+
+.alarm-label-input::placeholder {
+  color: var(--text-muted);
+}
+
+.alarm-add-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border: none;
+  border-radius: 10px;
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  -webkit-app-region: no-drag;
+}
+
+.alarm-add-btn:hover {
+  filter: brightness(1.15);
+  box-shadow: 0 4px 14px var(--accent-glow);
+}
+
+/* Alarm List */
+
+.alarm-list {
+  list-style: none;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.alarm-empty {
+  text-align: center;
+  padding: 28px;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.alarm-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  transition: all 0.25s ease;
+}
+
+.alarm-item:hover {
+  background: var(--bg-card-hover);
+}
+
+.alarm-item.ringing {
+  border-color: var(--danger);
+  animation: alarmRing 0.5s ease-in-out infinite;
+}
+
+@keyframes alarmRing {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.4); }
+  50%      { box-shadow: 0 0 0 12px rgba(231, 76, 60, 0); }
+}
+
+.alarm-toggle {
+  width: 44px;
+  height: 26px;
+  border-radius: 13px;
+  border: none;
+  background: var(--text-muted);
+  cursor: pointer;
+  position: relative;
+  transition: background 0.25s ease;
+  flex-shrink: 0;
+  -webkit-app-region: no-drag;
+}
+
+.alarm-toggle::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 0.25s ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.alarm-toggle.active {
+  background: var(--success);
+}
+
+.alarm-toggle.active::after {
+  transform: translateX(18px);
+}
+
+.alarm-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.alarm-info-time {
+  font-family: "Cascadia Code", "Fira Code", "JetBrains Mono", monospace;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.alarm-info-label {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.alarm-delete-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  -webkit-app-region: no-drag;
+}
+
+.alarm-delete-btn:hover {
+  background: rgba(231, 76, 60, 0.15);
+  color: var(--danger);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Module D — Timer & Stopwatch
+   ═══════════════════════════════════════════════════════════════════ */
+
+.timer-type-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  background: var(--bg-glass);
+  border-radius: 10px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+}
+
+.timer-type-btn {
+  padding: 6px 20px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  -webkit-app-region: no-drag;
+}
+
+.timer-type-btn:hover {
+  color: var(--text-primary);
+}
+
+.timer-type-btn.active {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 2px 8px var(--accent-glow);
+}
+
+.timer-panel {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  width: 100%;
+  animation: panelSwitch 0.4s ease;
+}
+
+.timer-panel.active {
+  display: flex;
+}
+
+/* ── Timer Ring ────────────────────────────────────────────────── */
+
+.timer-ring-container {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.timer-ring-svg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.timer-ring-progress {
+  transition: stroke-dashoffset 0.15s linear;
+}
+
+.timer-display {
+  font-family: "Cascadia Code", "Fira Code", "JetBrains Mono", "Roboto Mono", monospace;
+  font-size: 30px;
+  font-weight: 500;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+  z-index: 1;
+}
+
+.timer-inputs {
+  display: flex;
+  gap: 12px;
+}
+
+.timer-input-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.timer-input-group input {
+  width: 62px;
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg-input);
+  color: var(--text-primary);
+  font-size: 18px;
+  font-family: "Cascadia Code", "Fira Code", "JetBrains Mono", monospace;
+  text-align: center;
+  outline: none;
+  transition: border-color 0.2s ease;
+  -webkit-app-region: no-drag;
+}
+
+.timer-input-group input:focus {
+  border-color: var(--border-focus);
+}
+
+/* Hide number input spinners */
+.timer-input-group input::-webkit-inner-spin-button,
+.timer-input-group input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.timer-input-group input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.timer-input-group label {
+  font-size: 10px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.timer-actions,
+.stopwatch-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.timer-action-btn {
+  padding: 8px 22px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg-card);
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  -webkit-app-region: no-drag;
+}
+
+.timer-action-btn:hover {
+  background: var(--bg-card-hover);
+}
+
+.timer-action-btn.primary {
+  background: var(--accent);
+  color: #fff;
+  border-color: transparent;
+}
+
+.timer-action-btn.primary:hover {
+  filter: brightness(1.15);
+  box-shadow: 0 4px 14px var(--accent-glow);
+}
+
+/* ── Stopwatch ─────────────────────────────────────────────────── */
+
+.stopwatch-display {
+  font-family: "Cascadia Code", "Fira Code", "JetBrains Mono", "Roboto Mono", monospace;
+  font-size: 52px;
+  font-weight: 300;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  padding: 20px 0;
+}
+
+.lap-list {
+  list-style: none;
+  width: 100%;
+  max-height: 160px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.lap-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 14px;
+  background: var(--bg-card);
+  border-radius: 8px;
+  font-family: "Cascadia Code", "Fira Code", "JetBrains Mono", monospace;
+  font-size: 14px;
+}
+
+.lap-item .lap-index {
+  color: var(--text-muted);
+  font-size: 11px;
+}
+
+.lap-item .lap-time {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.lap-item .lap-total {
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Fullscreen Mode
+   ═══════════════════════════════════════════════════════════════════ */
+
+body.fullscreen-mode .titlebar,
+body.fullscreen-mode .navbar,
+body.fullscreen-mode .clock-type-tabs,
+body.fullscreen-mode .module-title,
+body.fullscreen-mode .world-clock-grid,
+body.fullscreen-mode .alarm-form,
+body.fullscreen-mode .alarm-list,
+body.fullscreen-mode .timer-type-tabs,
+body.fullscreen-mode .timer-inputs,
+body.fullscreen-mode .timer-actions,
+body.fullscreen-mode .stopwatch-actions,
+body.fullscreen-mode .lap-list,
+body.fullscreen-mode .flip-date,
+body.fullscreen-mode .digital-date,
+body.fullscreen-mode .digital-weekday {
+  display: none !important;
+}
+
+body.fullscreen-mode .app-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+body.fullscreen-mode #module-clock {
+  display: flex !important;
+}
+
+body.fullscreen-mode .digital-time {
+  font-size: 120px;
+}
+
+body.fullscreen-mode .analog-svg {
+  width: 320px;
+  height: 320px;
+}
+
+body.fullscreen-mode .flip-digit {
+  width: 80px;
+  height: 110px;
+}
+
+body.fullscreen-mode .flip-top,
+body.fullscreen-mode .flip-bottom {
+  font-size: 76px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Toast Notifications
+   ═══════════════════════════════════════════════════════════════════ */
+
+.world-toast {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 8px 20px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 99px;
+  font-size: 12px;
+  font-weight: 600;
+  z-index: 999;
+  pointer-events: none;
+  animation: toastIn 0.3s ease, toastOut 0.3s ease 1.5s forwards;
+}
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+@keyframes toastOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
